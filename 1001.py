@@ -5,6 +5,9 @@ TODOs:
     -> stats for films
     -> in main(): check for existance of seen.json in local folder, if false ask to create it
     -> listing seen films, listing unrated films (rate=0)
+    
+Possible further dev:
+    -> better interaction with the films (imdb API reading etc) eg query about a film: get a plot description, director, actors etc
 """
 import os
 import random
