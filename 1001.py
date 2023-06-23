@@ -1,5 +1,10 @@
 """
 A terminal-based application used to track the 1001 films you need to see.
+
+TODOs:
+    -> stats for films
+    -> in main(): check for existance of seen.json in local folder, if false ask to create it
+    -> listing seen films, listing unrated films (rate=0)
 """
 import os
 import random
@@ -103,12 +108,6 @@ def main():
                 break
             case _:
                 continue
-
-#    print("Checking if a movie was seen:")
-#    print("Aliens: ", checkIfSeen("Aliens (1986)"))
-#    print("The Assistant (2019)", checkIfSeen("The Assistant (2019)"))
-
-#    filmAdder("Aliens (1986)", 10)
 
 if __name__ == "__main__":
     main()
