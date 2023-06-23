@@ -1,3 +1,6 @@
+"""
+A terminal-based application used to track the 1001 films you need to see.
+"""
 import os
 import random
 import json
