@@ -95,6 +95,10 @@ def main():
         with open('seen.json', 'r') as f:
             seen_list = json.load(f)
     except:
+        print("Seems like its the first time using this program. The list of seen films doesnt exist")
+        print("Create one? [Y/N]")
+        conf = input()
+        print("I dont work yet :(")
         pass
 
     while True:     # main loop of the program
