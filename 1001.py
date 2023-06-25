@@ -13,12 +13,13 @@ import os
 import random
 import json
 
+ansY = ["Y", "y", "yes", "Yes", "YES"]
+ansN = ["N", "n", "no", "No", "NO"]
+
 def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
 
 def filmGetter(filmList):    # loops thru the film list, continues if the film is in seen_list
-    ansY = ["Y", "y", "yes", "Yes", "YES"]
-    ansN = ["N", "n", "no", "No", "NO"]
     while True:
         film = randomFilm(filmList)
         print("I've selected this: ", film)
