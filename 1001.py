@@ -13,10 +13,10 @@ import os
 import random
 import json
 
-def filmEntry(ttl, rat=0):
+def filmEntry(ttl, rat=0):      # creates a dictionary to add to the list of seen films, a separate function to reuse later in changing the rate of a film
     return dict(title = ttl, rating = rat)
 
-def randomFilm(films):
+def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
 
 def filmGetter(filmList):    # loops thru the film list, continues if the film is in seen_list
@@ -32,14 +32,14 @@ def filmGetter(filmList):    # loops thru the film list, continues if the film i
         else:
             print("Have you seen it? [Y/N]")
             inp = input()
-            if inp in ansY:    # should probably be a separate function
+            if inp in ansY:
                 filmRater(film)
                 continue
             elif inp in ansN:
                 break
             break
 
-def checkIfSeen(ttl):    # checks if a title is already in seen list
+def checkIfSeen(ttl):       # checks if a title is already in seen list
     seen = False
     try:
         with open('seen.json', 'r', encoding='utf-8') as f:
@@ -55,7 +55,7 @@ def checkIfSeen(ttl):    # checks if a title is already in seen list
 
     return seen
 
-def filmAdder(ttl, rat=0):    # adds a film to the seen_list
+def filmAdder(ttl, rat=0):      # adds a film to the seen_list
     seen_list =[]
 
     try:
@@ -69,7 +69,7 @@ def filmAdder(ttl, rat=0):    # adds a film to the seen_list
     with open('seen.json', 'w') as f:
         json.dump(seen_list, f, indent=4)
 
-def filmRater(film):
+def filmRater(film):        # rates a film using 
     while True:
         inp = input("Please rate (0-10): ")
         print(film)
@@ -77,27 +77,27 @@ def filmRater(film):
             rate = int(inp)
             if rate > 10:
                 rate = 10
-            print("rated {0}".format(rate))    # should add the film to seen list with rate
+            print("rated {0}".format(rate))
             filmRated = filmEntry(film, rate)
             filmAdder(film, rate)
             print("Successfully rated the film:")
             print(filmRated["title"])
             break
         except:
-            print("Please type an integer 0-10")    # should return false
+            print("Please type an integer 0-10")
             continue
 
 def main():
-    with open('the_list.txt', 'r', encoding='utf-8') as f:
+    with open('the_list.txt', 'r', encoding='utf-8') as f:      # reads all films on the list
         filmList = f.read().splitlines()
     
-    try:
+    try:       # tries to open seen.json, should ask to create such file if non-existent
         with open('seen.json', 'r') as f:
             seen_list = json.load(f)
     except:
         pass
 
-    while True:
+    while True:     # main loop of the program
         print("1 - Select a random film | 2 - List seen films")
         print("What do you want to do?")
         choice = input()
