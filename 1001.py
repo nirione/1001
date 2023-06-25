@@ -13,9 +13,6 @@ import os
 import random
 import json
 
-def filmEntry(ttl, rat=0):      # creates a dictionary to add to the list of seen films, a separate function to reuse later in changing the rate of a film
-    return dict(title = ttl, rating = rat)
-
 def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
 
@@ -68,8 +65,11 @@ def filmAdder(ttl, rat=0):      # adds a film to the seen_list
     
     with open('seen.json', 'w') as f:
         json.dump(seen_list, f, indent=4)
+           
+def filmEntry(ttl, rat=0):      # creates a dictionary to add to the list of seen films, a separate function to reuse later in changing the rate of a film
+    return dict(title = ttl, rating = rat)
 
-def filmRater(film):        # rates a film using 
+def filmRater(film):        # rates a film and adds it to the seen.json
     while True:
         inp = input("Please rate (0-10): ")
         print(film)
@@ -78,8 +78,8 @@ def filmRater(film):        # rates a film using
             if rate > 10:
                 rate = 10
             print("rated {0}".format(rate))
-            filmRated = filmEntry(film, rate)
-            filmAdder(film, rate)
+            filmRated = filmEntry(film, rate)       # creates a dictionary with title and rate of the film
+            filmAdder(film, rate)                   # adds the rated film to the seen.json
             print("Successfully rated the film:")
             print(filmRated["title"])
             break
@@ -114,4 +114,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
