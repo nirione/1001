@@ -92,18 +92,26 @@ def main():
     with open('the_list.txt', 'r', encoding='utf-8') as f:      # reads all films on the list
         filmList = f.read().splitlines()
     
-    try:       # tries to open seen.json, should ask to create such file if non-existent
+    try:       # tries to open seen.json, asks to create such file if non-existent
         with open('seen.json', 'r') as f:
             seen_list = json.load(f)
     except:
         print("Seems like its the first time using this program. The list of seen films doesnt exist")
         print("Create one? [Y/N]")
-        conf = input()
-        print("I dont work yet :(")
-        pass
+        while True:
+            conf = input()
+            if conf in ansY:
+                with open("seen.json", "w") as f:
+                    pass
+                break
+            elif conf in ansN:
+                break
+            else:
+                print("Invalid choice")
+                continue
 
     while True:     # main loop of the program
-        print("1 - Select a random film | 2 - List seen films")
+        print("1 - Select a random film | 2 - List seen films | e - exit")
         print("What do you want to do?")
         choice = input()
     
