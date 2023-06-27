@@ -4,11 +4,9 @@ A terminal-based application used to track the 1001 films you need to see.
 reconsider: filmGetter loop, seems a bit too long and too nested
 
 TODOs:
-    -> implement a function to change rating of the film
-    -> shorten the prompts in filmGetter: print out the possible options already 
-        eg 1 - want to see, 2 - seen, 3 - rate, 4 - skip
-    -> stats for films
     -> listing seen films, listing unrated films (rate=0)
+    -> implement a function to change rating of the film
+    -> stats for films
     
 Possible further dev:
     -> better interaction with the films (imdb API reading etc) eg query about a film: get a plot description, director, actors etc
