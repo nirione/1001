@@ -46,8 +46,11 @@ def filmGetter(filmList):    # loops thru the film list, continues if the film i
                     print("Want to see it? [Y/N]")
                     inp2 = input()
                     if inp2 in ansY:
-                        print("Copied title to clipbaord!")
-                        pc.copy(film)
+                        try:
+                            pc.copy(film)
+                            print("Copied title to clipbaord!")
+                        except:
+                            print("Selected film:", film)
                         select = True
                         break
                     elif inp2 in ansN:
