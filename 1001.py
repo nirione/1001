@@ -1,6 +1,8 @@
 """
 A terminal-based application used to track the 1001 films you need to see.
 
+reconsider: filmGetter loop, seems a bit too long and too nested
+
 TODOs:
     -> stats for films
     -> in main(): check for existance of seen.json in local folder, if false ask to create it
@@ -12,6 +14,7 @@ Possible further dev:
 import os
 import random
 import json
+import pyperclip as pc
 
 ansY = ["Y", "y", "yes", "Yes", "YES"]
 ansN = ["N", "n", "no", "No", "NO"]
@@ -20,22 +23,45 @@ def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
 
 def filmGetter(filmList):    # loops thru the film list, continues if the film is in seen_list
-    while True:
+    select = False
+    while not select:
         film = randomFilm(filmList)
-        print("I've selected this: ", film)
+    
+        while True:
+            print("I've selected this: ", film)
 
-        if checkIfSeen(film):
-            print("Already seen!")
-            continue
-        else:
-            print("Have you seen it? [Y/N]")
-            inp = input()
-            if inp in ansY:
-                filmRater(film)
+            if checkIfSeen(film):
+                print("Already seen!")
                 continue
-            elif inp in ansN:
-                break
-            break
+            else:
+                print("Have you seen it? [Y/N]")
+                inp = input()
+                if inp in ansY:
+                    filmRater(film)
+                    break
+                elif inp in ansN:
+                    print("Want to see it? [Y/N]")
+                    inp2 = input()
+                    if inp2 in ansY:
+                        print("Copied title to clipbaord!")
+                        pc.copy(film)
+                        select = True
+                        break
+                    elif inp2 in ansN:
+                        print("Not wanna see it...")
+                        break
+                    elif inp2 == "e":
+                        select = True
+                        break
+                    else:
+                        print("Invalid input")
+                        continue
+                elif inp == "e":
+                    select = True
+                    break
+                else:
+                    print("Invalid input")
+                    continue
 
 def checkIfSeen(ttl):       # checks if a title is already in seen list
     seen = False
@@ -127,3 +153,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
