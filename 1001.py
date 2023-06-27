@@ -16,13 +16,10 @@ import random
 import json
 import pyperclip as pc
 
-def randomFilm(films):      # returns a random film from the list
-    return films[random.randint(0, len(films)-1)]
-
-def filmGetter(filmList):    # loops thru the film list, continues if the film is in seen_list
+def filmGetter(films):    # loops thru the film list, continues if the film is in seen_list
     select = False          # possible options: seen, not seen, not wanna see
     while not select:       # if seen, then ask to rate, if not seen, then copy to clipboard, if not wanna see, then reroll   
-        film = randomFilm(filmList)
+        film =  films[random.randint(0, len(films)-1)]
         while True:
             if checkIfSeen(film) == True:
                 print("Already seen {0}!".format(film))
