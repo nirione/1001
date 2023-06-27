@@ -8,7 +8,6 @@ TODOs:
     -> shorten the prompts in filmGetter: print out the possible options already 
         eg 1 - want to see, 2 - seen, 3 - rate, 4 - skip
     -> stats for films
-    -> in main(): check for existance of seen.json in local folder, if false ask to create it
     -> listing seen films, listing unrated films (rate=0)
     
 Possible further dev:
