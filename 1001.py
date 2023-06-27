@@ -4,6 +4,7 @@ A terminal-based application used to track the 1001 films you need to see.
 reconsider: filmGetter loop, seems a bit too long and too nested
 
 TODOs:
+    -> implement a function to change rating of the film
     -> stats for films
     -> in main(): check for existance of seen.json in local folder, if false ask to create it
     -> listing seen films, listing unrated films (rate=0)
@@ -18,6 +19,7 @@ import pyperclip as pc
 
 ansY = ["Y", "y", "yes", "Yes", "YES"]
 ansN = ["N", "n", "no", "No", "NO"]
+ex = ["e", "E", "exit", "EXIT", "Exit"]
 
 def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
@@ -36,7 +38,7 @@ def filmGetter(filmList):    # loops thru the film list, continues if the film i
             else:
                 print("Have you seen it? [Y/N]")
                 inp = input()
-                if inp in ansY:
+                if inp in ansY:         # change all this to match case statement
                     filmRater(film)
                     break
                 elif inp in ansN:
@@ -122,19 +124,11 @@ def main():
         with open('seen.json', 'r') as f:
             seen_list = json.load(f)
     except:
-        print("Seems like its the first time using this program. The list of seen films doesnt exist")
-        print("Create one? [Y/N]")
-        while True:
-            conf = input()
-            if conf in ansY:
-                with open("seen.json", "w") as f:
-                    pass
-                break
-            elif conf in ansN:
-                break
-            else:
-                print("Invalid choice")
-                continue
+        print("Seems like its the first time using this program.")
+        print("The list of seen films doesnt exist")
+        print("Creating database for seen films...")
+        with open("seen.json", "w") as f:
+            pass
 
     while True:     # main loop of the program
         print("1 - Select a random film | 2 - List seen films | e - exit")
