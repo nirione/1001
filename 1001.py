@@ -18,10 +18,6 @@ import random
 import json
 import pyperclip as pc
 
-ansY = ["Y", "y", "yes", "Yes", "YES"]
-ansN = ["N", "n", "no", "No", "NO"]
-ex = ["e", "E", "exit", "EXIT", "Exit"]
-
 def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
 
@@ -29,45 +25,38 @@ def filmGetter(filmList):    # loops thru the film list, continues if the film i
     select = False          # possible options: seen, not seen, not wanna see
     while not select:       # if seen, then ask to rate, if not seen, then copy to clipboard, if not wanna see, then reroll   
         film = randomFilm(filmList)
-    
         while True:
-            print("I've selected this: ", film)
+            if checkIfSeen(film) == True:
+                print("Already seen {0}!".format(film))
+                break
 
-            if checkIfSeen(film):
-                print("Already seen!")
-                continue
-            else:
-                # change this if-else hell to match-case statement [1 - 2 - 3] input, as described 10 lines up
-                print("Have you seen it? [Y/N]")
-                inp = input()
-                if inp in ansY:         # change all this to match case statement
-                    filmRater(film)
-                    break
-                elif inp in ansN:
-                    print("Want to see it? [Y/N]")
-                    inp2 = input()
-                    if inp2 in ansY:
-                        try:
-                            pc.copy(film)
-                            print("Copied title to clipbaord!")
-                        except:
-                            print("Selected film:", film)
-                        select = True
-                        break
-                    elif inp2 in ansN:
-                        print("Not wanna see it...")
-                        break
-                    elif inp2 == "e":
-                        select = True
-                        break
-                    else:
-                        print("Invalid input")
-                        continue
-                elif inp == "e":
+            print("Selected film:")
+            print(" ", film)
+            print("1 - Watchlist | 2 - Seen | 3 - skip")
+            inp = input()
+
+            match inp:
+                case "1":
+                    try:
+                        pc.copy(film)
+                        print("Copied title to clipboard!")
+                    except:
+                        print("Seems like you are missing the \"pyperclip\" module on your machine...")
+                        print("Selected film:")
+                        print(" ", film)
                     select = True
                     break
-                else:
-                    print("Invalid input")
+                case "2":
+                    filmRater(film)
+                    break
+                case "3":
+                    print("Randomizing the film...")
+                    break
+                case "e":
+                    select = True
+                    break
+                case _:
+                    print("this will keep the loop going")
                     continue
 
 def checkIfSeen(ttl):       # checks if a title is already in seen list
@@ -111,11 +100,9 @@ def filmRater(film):        # rates a film and adds it to the seen.json
             rate = int(inp)
             if rate > 10:
                 rate = 10
-            print("rated {0}".format(rate))
             filmRated = filmEntry(film, rate)       # creates a dictionary with title and rate of the film
             filmAdder(film, rate)                   # adds the rated film to the seen.json
-            print("Successfully rated the film:")
-            print(filmRated["title"])
+            print("Successfully rated the film {0} with {1}/10".format(filmRated["title"], filmRated["rating"]))
             break
         except:
             print("Please type an integer 0-10")
