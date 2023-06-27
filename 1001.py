@@ -26,8 +26,8 @@ def randomFilm(films):      # returns a random film from the list
     return films[random.randint(0, len(films)-1)]
 
 def filmGetter(filmList):    # loops thru the film list, continues if the film is in seen_list
-    select = False
-    while not select:
+    select = False          # possible options: seen, not seen, not wanna see
+    while not select:       # if seen, then ask to rate, if not seen, then copy to clipboard, if not wanna see, then reroll   
         film = randomFilm(filmList)
     
         while True:
@@ -37,6 +37,7 @@ def filmGetter(filmList):    # loops thru the film list, continues if the film i
                 print("Already seen!")
                 continue
             else:
+                # change this if-else hell to match-case statement [1 - 2 - 3] input, as described 10 lines up
                 print("Have you seen it? [Y/N]")
                 inp = input()
                 if inp in ansY:         # change all this to match case statement
