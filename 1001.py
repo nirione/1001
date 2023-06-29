@@ -1,8 +1,6 @@
 """
 A terminal-based application used to track the 1001 films you need to see.
 
-reconsider: filmGetter loop, seems a bit too long and too nested
-
 TODOs:
     -> listing seen films, listing unrated films (rate=0)
     -> implement a function to change rating of the film
