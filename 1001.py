@@ -31,11 +31,9 @@ def filmGetter(films):    # loops thru the film list, continues if the film is i
             match inp:
                 case "1":
                     try:
-                        pc.copy(film)
+                        pc.copy(film + " imdb")
                         print("Copied title to clipboard!")
                     except:
-                        print("Seems like you are missing the \"pyperclip\" module on your machine...")
-                        print("Selected film:")
                         print(" ", film)
                     select = True
                     break
@@ -101,6 +99,22 @@ def filmRater(film):        # rates a film and adds it to the seen.json
             print("Please type an integer 0-10")
             continue
 
+def filmsSeen(choice):
+    with open('seen.json', 'r', encoding='utf-8') as f:
+            seen_list = json.load(f)
+
+    match choice:
+        case "2":
+            print("You've seen these films:")
+            for i in seen_list:
+                print("{0}, rated {1}".format(i["title"], i["rating"]))
+
+        case "3":
+            print("You haven't rated these films:")
+            for i in seen_list:
+                if i["rating"] == 0:
+                    print(i["title"])
+
 def main():
     with open('the_list.txt', 'r', encoding='utf-8') as f:      # reads all films on the list
         filmList = f.read().splitlines()
@@ -116,15 +130,18 @@ def main():
             pass
 
     while True:     # main loop of the program
-        print("1 - Select a random film | 2 - List seen films | e - exit")
+        print("1 - Select a random film | 2 - List seen films | 3 - list not rated films | e - exit")
         print("What do you want to do?")
         choice = input()
-    
+        print("")
+        print("___")
         match choice:
             case "1":
                 filmGetter(filmList)
             case "2":
-                print("This will show you the list of films youve seen!")
+                filmsSeen(choice)
+            case "3":
+                filmsSeen(choice)
             case "e":
                 break
             case _:
