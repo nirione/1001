@@ -2,11 +2,11 @@
 A terminal-based application used to track the 1001 films you need to see.
 
 TODOs:
-    -> listing seen films, listing unrated films (rate=0)
+    -> add an option to remove a certain film
     -> implement a function to change rating of the film
-    -> stats for films
     
 Possible further dev:
+    -> stats for films
     -> better interaction with the films (imdb API reading etc) eg query about a film: get a plot description, director, actors etc
 """
 import os
@@ -15,8 +15,8 @@ import json
 import pyperclip as pc
 
 def filmGetter(films):    # loops thru the film list, continues if the film is in seen_list
-    select = False          # possible options: seen, not seen, not wanna see
-    while not select:       # if seen, then ask to rate, if not seen, then copy to clipboard, if not wanna see, then reroll   
+    select = False   
+    while not select:     # if seen, then ask to rate, if not seen, then copy to clipboard, if not wanna see, then reroll   
         film =  films[random.randint(0, len(films)-1)]
         while True:
             if checkIfSeen(film) == True:
@@ -24,7 +24,7 @@ def filmGetter(films):    # loops thru the film list, continues if the film is i
                 break
 
             print("Selected film:")
-            print(" ", film)
+            print("-> ", film)
             print("1 - Watchlist | 2 - Seen | 3 - skip")
             inp = input()
 
@@ -100,20 +100,23 @@ def filmRater(film):        # rates a film and adds it to the seen.json
             continue
 
 def filmsSeen(choice):
-    with open('seen.json', 'r', encoding='utf-8') as f:
+    try:
+        with open('seen.json', 'r', encoding='utf-8') as f:
             seen_list = json.load(f)
 
-    match choice:
-        case "2":
-            print("You've seen these films:")
-            for i in seen_list:
-                print("{0}, rated {1}".format(i["title"], i["rating"]))
+        match choice:
+            case "2":
+                print("You've seen these films:")
+                for i in seen_list:
+                    print(" {0}, rated {1}".format(i["title"], i["rating"]))
 
-        case "3":
-            print("You haven't rated these films:")
-            for i in seen_list:
-                if i["rating"] == 0:
-                    print(i["title"])
+            case "3":
+                print("You haven't rated these films:")
+                for i in seen_list:
+                    if i["rating"] == 0:
+                        print(" {0}".format(i["title"]))
+    except:
+        print("You haven't seen any film yet!")
 
 def main():
     with open('the_list.txt', 'r', encoding='utf-8') as f:      # reads all films on the list
