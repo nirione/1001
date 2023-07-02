@@ -100,6 +100,7 @@ def filmRater(film):        # rates a film and adds it to the seen.json
             continue
 
 def filmsSeen(choice):
+    not_rated_list = []
     try:
         with open('seen.json', 'r', encoding='utf-8') as f:
             seen_list = json.load(f)
@@ -115,8 +116,30 @@ def filmsSeen(choice):
                 for i in seen_list:
                     if i["rating"] == 0:
                         print(" {0}".format(i["title"]))
+                        not_rated_list.append(i)
     except:
-        print("You haven't seen any film yet!")
+      print("You haven't seen any film yet!")
+
+    return not_rated_list
+
+def filmRateChanger():
+    with open('seen.json', 'r') as f:
+        seen_list = json.load(f)
+
+    while True:
+        print("Which film do you want to rate?")
+        ttl = input()
+        print("Please rate:")
+        rat = input()
+        for i in seen_list:
+            if i["title"] == ttl:
+                print(i)
+                i["rating"] = rat
+                print(i)
+        break
+
+    with open('seen.json', 'w') as f:
+        json.dump(seen_list, f, indent=4)
 
 def main():
     with open('the_list.txt', 'r', encoding='utf-8') as f:      # reads all films on the list
@@ -133,7 +156,7 @@ def main():
             pass
 
     while True:     # main loop of the program
-        print("1 - Select a random film | 2 - List seen films | 3 - list not rated films | e - exit")
+        print("1 - Select a random film | 2 - List seen films | 3 - List not rated films | 4 - Rate an unrated film | e - exit")
         print("What do you want to do?")
         choice = input()
         print("")
@@ -145,6 +168,8 @@ def main():
                 filmsSeen(choice)
             case "3":
                 filmsSeen(choice)
+            case "4":
+                filmRateChanger()
             case "e":
                 break
             case _:
