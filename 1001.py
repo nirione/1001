@@ -2,8 +2,8 @@
 A terminal-based application used to track the 1001 films you need to see.
 
 TODOs:
-    -> add an option to remove a certain film
-    -> implement a function to change rating of the film
+    -> add an option to remove a certain film from seen list
+    -> implement a function to change rating of the film -- done?
     
 Possible further dev:
     -> stats for films
