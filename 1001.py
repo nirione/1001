@@ -125,6 +125,8 @@ def filmsSeen(choice):
 def filmRateChanger():
     with open('seen.json', 'r') as f:
         seen_list = json.load(f)
+    
+    filmsSeen("3")
 
     while True:
         print("Which film do you want to rate?")
