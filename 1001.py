@@ -3,7 +3,6 @@ A terminal-based application used to track the 1001 films you need to see.
 
 TODOs:
     -> add an option to remove a certain film from seen list
-    -> implement a function to change rating of the film -- done?
     
 Possible further dev:
     -> stats for films
@@ -20,19 +19,19 @@ def filmGetter(films):    # loops thru the film list, continues if the film is i
         film =  films[random.randint(0, len(films)-1)]
         while True:
             if checkIfSeen(film) == True:
-                print("Already seen {0}!".format(film))
+                print("  Already seen {0}!".format(film))
                 break
 
-            print("Selected film:")
+            print("  Selected film:")
             print("-> ", film)
-            print("1 - Watchlist | 2 - Seen | 3 - skip")
+            print("1 - Watchlist | 2 - Seen | 3 - skip | e - stop")
             inp = input()
 
             match inp:
                 case "1":
                     try:
                         pc.copy(film + " imdb")
-                        print("Copied title to clipboard!")
+                        print("  Copied title to clipboard!")
                     except:
                         print(" ", film)
                     select = True
@@ -41,7 +40,7 @@ def filmGetter(films):    # loops thru the film list, continues if the film is i
                     filmRater(film)
                     break
                 case "3":
-                    print("Randomizing the film...")
+                    print("  Randomizing the film...")
                     break
                 case "e":
                     select = True
@@ -85,7 +84,7 @@ def filmEntry(ttl, rat=0):      # creates a dictionary to add to the list of see
 
 def filmRater(film):        # rates a film and adds it to the seen.json
     while True:
-        inp = input("Please rate (0-10): ")
+        inp = input("  Please rate (0-10): ")
         print(film)
         try:
             rate = int(inp)
@@ -93,52 +92,69 @@ def filmRater(film):        # rates a film and adds it to the seen.json
                 rate = 10
             filmRated = filmEntry(film, rate)       # creates a dictionary with title and rate of the film
             filmAdder(film, rate)                   # adds the rated film to the seen.json
-            print("Successfully rated the film {0} with {1}/10".format(filmRated["title"], filmRated["rating"]))
+            print("  Successfully rated the film {0} with {1}/10".format(filmRated["title"], filmRated["rating"]))
             break
         except:
-            print("Please type an integer 0-10")
+            print("  Please type an integer 0-10")
             continue
 
-def filmsSeen(choice):
+def filmsSeen():
     not_rated_list = []
     try:
         with open('seen.json', 'r', encoding='utf-8') as f:
             seen_list = json.load(f)
+        
+        for i in seen_list:
+            if i["rating"] == 0:
+                not_rated_list.append(i)
 
-        match choice:
-            case "2":
-                print("You've seen these films:")
-                for i in seen_list:
-                    print(" {0}, rated {1}".format(i["title"], i["rating"]))
+        print("  You've seen these films:")
+        for i in seen_list:
+            print("  {0}, rated {1}".format(i["title"], i["rating"]))
 
-            case "3":
-                print("You haven't rated these films:")
-                for i in seen_list:
-                    if i["rating"] == 0:
-                        print(" {0}".format(i["title"]))
-                        not_rated_list.append(i)
     except:
-      print("You haven't seen any film yet!")
+      print("  You haven't seen any film yet!")
 
     return not_rated_list
+
+def filmsNotRated():
+    not_rated_list = []
+    try:
+        with open('seen.json', 'r', encoding='utf-8') as f:
+            seen_list = json.load(f)
+        
+        for i in seen_list:
+            if i["rating"] == 0:
+                not_rated_list.append(i)
+       
+        if len(not_rated_list) == 0:
+            print("  No unrated film detected!")
+        else:
+            print("  Not rated films:")
+            for i in not_rated_list:
+                print("  "+i["title"])
+    except: 
+      print("  You haven't seen any film yet!")
+
+    return len(not_rated_list)
+
 
 def filmRateChanger():
     with open('seen.json', 'r') as f:
         seen_list = json.load(f)
     
-    filmsSeen("3")
-
-    while True:
-        print("Which film do you want to rate?")
-        ttl = input()
-        print("Please rate:")
-        rat = input()
-        for i in seen_list:
-            if i["title"] == ttl:
-                print(i)
-                i["rating"] = rat
-                print(i)
-        break
+    if filmsNotRated() > 0:
+        while True:
+            print("  Which film do you want to rate?")
+            ttl = input()
+            print("  Please rate:")
+            rat = input()
+            for i in seen_list:
+                if i["title"] == ttl:
+                    print(i)
+                    i["rating"] = rat
+                    print(i)
+            break
 
     with open('seen.json', 'w') as f:
         json.dump(seen_list, f, indent=4)
@@ -151,13 +167,14 @@ def main():
         with open('seen.json', 'r') as f:
             seen_list = json.load(f)
     except:
-        print("Seems like its the first time using this program.")
-        print("The list of seen films doesnt exist")
-        print("Creating database for seen films...")
+        print("   Seems like its the first time using this program.")
+        print("   The list of seen films doesnt exist")
+        print("   Creating database for seen films...")
         with open("seen.json", "w") as f:
             pass
 
     while True:     # main loop of the program
+        print("_____")
         print("1 - Select a random film | 2 - List seen films | 3 - List not rated films | 4 - Rate an unrated film | e - exit")
         print("What do you want to do?")
         choice = input()
@@ -167,9 +184,9 @@ def main():
             case "1":
                 filmGetter(filmList)
             case "2":
-                filmsSeen(choice)
+                filmsSeen()
             case "3":
-                filmsSeen(choice)
+                filmsNotRated()
             case "4":
                 filmRateChanger()
             case "e":
